@@ -1,20 +1,25 @@
 package autocloseable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DatabaseConnection implements AutoCloseable {
 
+    private static final Logger logger = LogManager.getLogger(DatabaseConnection.class);
+    
     private final String connectionName;
 
     public DatabaseConnection(String connectionName) {
         this.connectionName = connectionName;
-        System.out.println("Connection opened: " + connectionName);
+        logger.info("Connection opened: {}", connectionName);
     }
 
     public void executeQuery(String query) {
-        System.out.println("Executing query on " + connectionName + ": " + query);
+        logger.info("Executing query on {}: {}", connectionName, query);
     }
 
     @Override
     public void close() throws Exception {
-        System.out.println("Connection Closed: " + connectionName);
+        logger.info("Connection Closed: {}", connectionName);
     }
 }

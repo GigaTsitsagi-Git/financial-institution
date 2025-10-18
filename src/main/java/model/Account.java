@@ -6,11 +6,15 @@ import exception.InvalidAccountException;
 import interfaces.ICalculable;
 import interfaces.IStorable;
 import interfaces.functional.IAccountOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
 public class Account implements ICalculable, IStorable {
 
+    private static final Logger logger = LogManager.getLogger(Account.class);
+    
     private String accountNumber;
     private BigDecimal balance;
     private AccountType type;
@@ -24,7 +28,6 @@ public class Account implements ICalculable, IStorable {
         this.currency = currency;
         this.accountNumber = accountNumber;
         this.balance = balance;
-
     }
 
     public String getAccountNumber() {
@@ -48,10 +51,10 @@ public class Account implements ICalculable, IStorable {
     }
 
     public void executeOperation(BigDecimal amount, IAccountOperation operation) {
-        System.out.println("Processing operation on account " + accountNumber);
+        logger.info("Processing operation on account {}", accountNumber);
         BigDecimal newBalance = operation.apply(balance, amount);
         balance = newBalance;
-        System.out.println("Operation complete. New balance: " + balance);
+        logger.info("Operation complete. New balance: {}", balance);
     }
 
     @Override
@@ -79,6 +82,37 @@ public class Account implements ICalculable, IStorable {
 
     @Override
     public void save() {
-        System.out.println("Saved to some Database");
+        logger.info("Saved to some Database");
+    }
+
+    // Getter methods for enums
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
+    public CurrencyType getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyType currency) {
+        this.currency = currency;
+    }
+
+    // Enhanced methods using enums
+    public double calculateInterestForType() {
+        return type.calculateInterest(balance.doubleValue());
+    }
+
+    public String getFormattedBalance() {
+        return currency.formatAmount(balance);
+    }
+
+    public String getAccountInfo() {
+        return String.format("Account %s [%s] - Balance: %s", 
+                accountNumber, type.name(), getFormattedBalance());
     }
 }

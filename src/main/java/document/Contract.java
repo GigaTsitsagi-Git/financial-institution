@@ -1,10 +1,15 @@
 package document;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Contract extends Document {
 
+    private static final Logger logger = LogManager.getLogger(Contract.class);
+    
     private String partyA;
     private String partyB;
     private LocalTime createdTime;
@@ -17,8 +22,8 @@ public class Contract extends Document {
 
     @Override
     public void printDetails() {
-        System.out.println("Contract ID: " + getId() + ", Date: " + getDate());
-        System.out.println("PartyA:" + partyA + ", PartyB: " + partyB);
+        logger.info("Contract ID: {}, Date: {}", getId(), getDate());
+        logger.info("PartyA: {}, PartyB: {}", partyA, partyB);
         createdTime = LocalTime.now();
     }
 

@@ -2,11 +2,15 @@ package trading;
 
 import model.Account;
 import model.Customer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
 public class Trader {
 
+    private static final Logger logger = LogManager.getLogger(Trader.class);
+    
     private String traderId;
     private Customer customer;
 
@@ -29,13 +33,13 @@ public class Trader {
 
     public void showCustomerAccounts() {
         if (customer != null && customer.getAccounts() != null) {
-            System.out.println("Accounts for customer " + customer.getName() + ":");
+            logger.info("Accounts for customer {}:", customer.getName());
             Set<Account> accaunts = customer.getAccounts();
             for (Account account : accaunts) {
-                System.out.println(" - " + account.getAccountNumber() + " : " + account.getBalance());
+                logger.info(" - {} : {}", account.getAccountNumber(), account.getBalance());
             }
         } else {
-            System.out.println("No customer or accounts found for this trader.");
+            logger.info("No customer or accounts found for this trader.");
         }
     }
 

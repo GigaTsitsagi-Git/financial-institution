@@ -1,5 +1,8 @@
 package enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum TransactionStatus {
 
     PENDING("Waiting for approval"),
@@ -7,10 +10,11 @@ public enum TransactionStatus {
     FAILED("Transaction failed"),
     CANCELED("Transaction cancelled");
 
+    private static final Logger logger = LogManager.getLogger(TransactionStatus.class);
     private final String description;
 
     static {
-        System.out.println("TransactionStatus enum loaded into memory.");
+        logger.info("TransactionStatus enum loaded into memory.");
     }
 
     TransactionStatus(String description) {

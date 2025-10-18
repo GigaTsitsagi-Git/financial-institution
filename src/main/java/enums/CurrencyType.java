@@ -1,5 +1,8 @@
 package enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 
 public enum CurrencyType {
@@ -9,11 +12,12 @@ public enum CurrencyType {
     GBP("Pound Sterling", "£"),
     GEL("Georgina Lari", "₾");
 
+    private static final Logger logger = LogManager.getLogger(CurrencyType.class);
     private final String fullName;
     private final String symbol;
 
     static {
-        System.out.println("CurrencyType enum loaded into memory.");
+        logger.info("CurrencyType enum loaded into memory.");
     }
 
     CurrencyType(String fullName, String symbol) {

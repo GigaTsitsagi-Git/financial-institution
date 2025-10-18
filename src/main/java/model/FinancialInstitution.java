@@ -1,6 +1,8 @@
 package model;
 
 import transaction.FinancialExchange;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +10,7 @@ import java.util.*;
 
 public class FinancialInstitution {
 
+    private static final Logger logger = LogManager.getLogger(FinancialInstitution.class);
     private static int institutionCount = 0;
 
     private String name;
@@ -42,10 +45,10 @@ public class FinancialInstitution {
 
     public void printFinancialExchange() {
         if (financialExchanges.isEmpty()) {
-            System.out.println("The list is empty");
+            logger.info("The list is empty");
         }
         for (Map.Entry<String, FinancialExchange> financialExchangeEntry : financialExchanges.entrySet()) {
-            System.out.println(financialExchangeEntry.getKey() + " => " + financialExchangeEntry.getValue());
+            logger.info("{} => {}", financialExchangeEntry.getKey(), financialExchangeEntry.getValue());
         }
     }
 

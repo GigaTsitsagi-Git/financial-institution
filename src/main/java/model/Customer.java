@@ -3,6 +3,8 @@ package model;
 import interfaces.IMove;
 import interfaces.IStorable;
 import transaction.Loan;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,6 +12,8 @@ import java.util.Set;
 
 public class Customer implements IMove, IStorable {
 
+    private static final Logger logger = LogManager.getLogger(Customer.class);
+    
     private String customerId;
     private String name;
     private int age;
@@ -83,13 +87,13 @@ public class Customer implements IMove, IStorable {
     public void printAccounts() {
         accounts.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(account -> logger.info("Account: {}", account));
     }
 
     public void printLoans() {
         loans.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(loan -> logger.info("Loan: {}", loan));
     }
 
     public Loan getFirstLoan() {
@@ -120,11 +124,11 @@ public class Customer implements IMove, IStorable {
 
     @Override
     public void move() {
-        System.out.println("Customer Entered the Bank");
+        logger.info("Customer Entered the Bank");
     }
 
     @Override
     public void save() {
-        System.out.println("Saved the data into Bank DataBase");
+        logger.info("Saved the data into Bank DataBase");
     }
 }

@@ -1,8 +1,12 @@
 package model;
 
 import employee.Employee;
+import enums.CurrencyType;
+import enums.TransactionStatus;
 import exception.CurrencyNotSupportedException;
 import exception.UnderageCustomerException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import transaction.Transaction;
 
 import java.util.ArrayList;
@@ -11,6 +15,8 @@ import java.util.Objects;
 
 public class Bank {
 
+    private static final Logger logger = LogManager.getLogger(Bank.class);
+    
     private String name;
 
     private List<Customer> customers;
@@ -63,29 +69,29 @@ public class Bank {
 
     public void printEmployees() {
         if (employees.isEmpty()) {
-            System.out.println("The list is empty");
+            logger.info("The list is empty");
         }
         employees.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(employee -> logger.info("Employee: {}", employee));
     }
 
     public final void printCurrencies() {
         currencies.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(currency -> logger.info("Currency: {}", currency));
     }
 
     public void printCustomers() {
         customers.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(customer -> logger.info("Customer: {}", customer));
     }
 
     public void printTransactions() {
         transactions.stream()
                 .filter(Objects::nonNull)
-                .forEach(System.out::println);
+                .forEach(transaction -> logger.info("Transaction: {}", transaction));
     }
 
     public Employee getFirstEmployee() {
@@ -119,10 +125,46 @@ public class Bank {
             throw new CurrencyNotSupportedException("Currency not supported " + currencyCode);
         }
 
-        System.out.println("Exchanged into " + currencyCode);
+        logger.info("Exchanged into {}", currencyCode);
     }
 
     public String getName() {
         return name;
+    }
+
+    // Enhanced methods using enums
+    public void addCurrency(CurrencyType currencyType) {
+        Currency currency = new Currency(currencyType);
+        currencies.add(currency);
+    }
+
+    public boolean supportsCurrency(CurrencyType currencyType) {
+        return currencies.stream()
+                .anyMatch(c -> c.getCurrencyType() == currencyType);
+    }
+
+    public List<Transaction> getTransactionsByStatus(TransactionStatus status) {
+        return transactions.stream()
+                .filter(t -> t.getTransactionStatus() == status)
+                .toList();
+    }
+
+    public List<Transaction> getPendingTransactions() {
+        return getTransactionsByStatus(TransactionStatus.PENDING);
+    }
+
+    public List<Transaction> getCompletedTransactions() {
+        return getTransactionsByStatus(TransactionStatus.COMPLETED);
+    }
+
+    public void completeAllPendingTransactions() {
+        transactions.stream()
+                .filter(Transaction::isTransactionPending)
+                .forEach(Transaction::completeTransaction);
+    }
+
+    public String getBankInfo() {
+        return String.format("Bank: %s - Customers: %d, Employees: %d, Currencies: %d, Transactions: %d", 
+                name, customers.size(), employees.size(), currencies.size(), transactions.size());
     }
 }

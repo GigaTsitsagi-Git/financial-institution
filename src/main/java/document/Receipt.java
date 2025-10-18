@@ -1,11 +1,16 @@
 package document;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Receipt extends Document {
 
+    private static final Logger logger = LogManager.getLogger(Receipt.class);
+    
     private String transactionMessage;
     private BigDecimal amount;
     private LocalTime createdTime;
@@ -19,8 +24,8 @@ public class Receipt extends Document {
 
     @Override
     public void printDetails() {
-        System.out.println("Receipt ID: " + getId() + ", Date: " + getDate());
-        System.out.println("Transaction: " + transactionMessage + ", Amount: " + amount);
+        logger.info("Receipt ID: {}, Date: {}", getId(), getDate());
+        logger.info("Transaction: {}, Amount: {}", transactionMessage, amount);
     }
 
     @Override

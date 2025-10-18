@@ -1,14 +1,18 @@
 package enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum LoanType {
 
     PERSONAL(0.05),
     MORTGAGE(0.03);
 
+    private static final Logger logger = LogManager.getLogger(LoanType.class);
     private final double baseRate;
 
     static {
-        System.out.println("LoanType enum loaded into memory.");
+        logger.info("LoanType enum loaded into memory.");
     }
 
     LoanType(double baseRate) {

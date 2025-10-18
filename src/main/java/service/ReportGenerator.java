@@ -3,24 +3,27 @@ package service;
 import interfaces.IPrint;
 import model.Account;
 import model.Customer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
 public class ReportGenerator {
 
+    private static final Logger logger = LogManager.getLogger(ReportGenerator.class);
+
     public void genererateCustomerReport(Customer customer) {
-        System.out.println("--- Customer Report for " + customer.getName() + " ---");
+        logger.info("--- Customer Report for {} ---", customer.getName());
         Set<Account> accounts = customer.getAccounts();
         for (Account account : accounts) {
-            System.out.println("Account: " + account.getAccountNumber() + " | Balance: " + account.getBalance());
-
+            logger.info("Account: {} | Balance: {}", account.getAccountNumber(), account.getBalance());
         }
     }
 
     public void printDetails(IPrint print) {
-        System.out.println("=== Printing Document ===");
+        logger.info("=== Printing Document ===");
         print.printDetails();  // Polymorphic call
-        System.out.println("=========================");
+        logger.info("=========================");
     }
 
 }

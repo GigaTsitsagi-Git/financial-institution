@@ -10,7 +10,7 @@ public class SavingsAccount extends Account {
     private BigDecimal interestRate;
 
     public SavingsAccount(String accountNumber, BigDecimal balance, BigDecimal interestRate) {
-        super(accountNumber, AccountType.BUSINESS, CurrencyType.USD, balance);
+        super(accountNumber, AccountType.SAVINGS, CurrencyType.USD, balance);
         this.interestRate = interestRate;
     }
 

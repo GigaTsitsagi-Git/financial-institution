@@ -2,9 +2,13 @@ package employee;
 
 import interfaces.IMove;
 import interfaces.IPrint;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Person implements IMove, IPrint {
 
+    private static final Logger logger = LogManager.getLogger(Person.class);
+    
     protected String firstName;
     protected String lastName;
     protected int age;
@@ -41,11 +45,11 @@ public class Person implements IMove, IPrint {
 
     @Override
     public void move() {
-        System.out.println("Person is Walking");
+        logger.info("Person is Walking");
     }
 
     @Override
     public void printDetails() {
-        System.out.println("First name - " + firstName + ", Last name - " + lastName);
+        logger.info("First name - {}, Last name - {}", firstName, lastName);
     }
 }

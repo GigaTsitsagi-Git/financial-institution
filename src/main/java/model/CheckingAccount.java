@@ -3,15 +3,19 @@ package model;
 import enums.AccountType;
 import enums.CurrencyType;
 import exception.InsufficientFundsException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
 public class CheckingAccount extends Account {
 
+    private static final Logger logger = LogManager.getLogger(CheckingAccount.class);
+    
     private BigDecimal overdraftLimit;
 
     public CheckingAccount(String accountNumber, BigDecimal balance, BigDecimal overdraftLimit) {
-        super(accountNumber, AccountType.BUSINESS, CurrencyType.USD, balance);
+        super(accountNumber, AccountType.CHEKGINS, CurrencyType.USD, balance);
         this.overdraftLimit = overdraftLimit;
     }
 
@@ -27,7 +31,7 @@ public class CheckingAccount extends Account {
         if ((getBalance().add(overdraftLimit)).compareTo(amount) < 0) {
             throw new InsufficientFundsException("Not enough money in the account " + getAccountNumber());
         }
-        System.out.println("Withdraw was success");
+        logger.info("Withdraw was success");
     }
 
     public boolean isOverdraftInUse() {

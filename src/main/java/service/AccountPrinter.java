@@ -1,7 +1,12 @@
 package service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class AccountPrinter<T> {
 
+    private static final Logger logger = LogManager.getLogger(AccountPrinter.class);
+    
     private T account;
 
     public AccountPrinter(T account) {
@@ -9,7 +14,7 @@ public class AccountPrinter<T> {
     }
 
     public void printAccount() {
-        System.out.println("Account info: " + account);
+        logger.info("Account info: {}", account);
     }
 
 }

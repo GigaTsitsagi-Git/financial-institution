@@ -1,9 +1,14 @@
 package employee;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 
 public abstract class Employee extends Person {
 
+    private static final Logger logger = LogManager.getLogger(Employee.class);
+    
     protected String employeeId;
     protected BigDecimal salary;
 
@@ -34,7 +39,7 @@ public abstract class Employee extends Person {
     @Override
     public void printDetails() {
         super.printDetails();
-        System.out.println("Employee id - " + employeeId);
+        logger.info("Employee id - {}", employeeId);
     }
 
     @Override

@@ -1,8 +1,13 @@
 package employee;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 
 public class Manager extends BankEmployee {
+
+    private static final Logger logger = LogManager.getLogger(Manager.class);
 
     public Manager(String firstName, String lastName, int age, String employeeId, BigDecimal salary) {
         super(firstName, lastName, age, employeeId, salary);
@@ -10,17 +15,17 @@ public class Manager extends BankEmployee {
 
     @Override
     public void approveLoan(BigDecimal amount) {
-        System.out.println("Loan approved: " + amount);
+        logger.info("Loan approved: {}", amount);
     }
 
     @Override
     public void printDetails() {
         super.printDetails();
-        System.out.println("Manager: salary => " + salary);
+        logger.info("Manager: salary => {}", salary);
     }
 
     @Override
     public void work() {
-        System.out.println("Manager " + getFirstName() + " is holding a team meeting");
+        logger.info("Manager {} is holding a team meeting", getFirstName());
     }
 }
