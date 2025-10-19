@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class Transaction implements ITransferMoney {
 
     private static final Logger logger = LogManager.getLogger(Transaction.class);
-    
+
     private String message;
     private Account from;
     private Account to;
@@ -98,7 +98,7 @@ public class Transaction implements ITransferMoney {
     }
 
     public String getTransactionInfo() {
-        return String.format("Transaction [%s] - Amount: %s, Status: %s, Message: %s", 
+        return String.format("Transaction [%s] - Amount: %s, Status: %s, Message: %s",
                 transactionStatus.name(), amount, transactionStatus.getDescription(), message);
     }
 

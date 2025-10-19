@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class CheckingAccount extends Account {
 
     private static final Logger logger = LogManager.getLogger(CheckingAccount.class);
-    
+
     private BigDecimal overdraftLimit;
 
     public CheckingAccount(String accountNumber, BigDecimal balance, BigDecimal overdraftLimit) {

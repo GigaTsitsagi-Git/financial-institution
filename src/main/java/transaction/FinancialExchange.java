@@ -11,7 +11,7 @@ import java.util.List;
 public class FinancialExchange {
 
     private static final Logger logger = LogManager.getLogger(FinancialExchange.class);
-    
+
     private String name;
 
     private List<Stock> listedStocks;

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class Account implements ICalculable, IStorable {
 
     private static final Logger logger = LogManager.getLogger(Account.class);
-    
+
     private String accountNumber;
     private BigDecimal balance;
     private AccountType type;
@@ -112,7 +112,7 @@ public class Account implements ICalculable, IStorable {
     }
 
     public String getAccountInfo() {
-        return String.format("Account %s [%s] - Balance: %s", 
+        return String.format("Account %s [%s] - Balance: %s",
                 accountNumber, type.name(), getFormattedBalance());
     }
 }

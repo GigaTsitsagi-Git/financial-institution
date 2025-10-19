@@ -13,7 +13,7 @@ import java.util.Set;
 public class Customer implements IMove, IStorable {
 
     private static final Logger logger = LogManager.getLogger(Customer.class);
-    
+
     private String customerId;
     private String name;
     private int age;

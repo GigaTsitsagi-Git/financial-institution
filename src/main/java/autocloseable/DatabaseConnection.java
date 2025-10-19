@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class DatabaseConnection implements AutoCloseable {
 
     private static final Logger logger = LogManager.getLogger(DatabaseConnection.class);
-    
+
     private final String connectionName;
 
     public DatabaseConnection(String connectionName) {

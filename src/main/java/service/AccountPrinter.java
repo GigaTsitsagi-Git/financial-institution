@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class AccountPrinter<T> {
 
     private static final Logger logger = LogManager.getLogger(AccountPrinter.class);
-    
+
     private T account;
 
     public AccountPrinter(T account) {

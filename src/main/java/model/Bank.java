@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Bank {
 
     private static final Logger logger = LogManager.getLogger(Bank.class);
-    
+
     private String name;
 
     private List<Customer> customers;
@@ -164,7 +164,7 @@ public class Bank {
     }
 
     public String getBankInfo() {
-        return String.format("Bank: %s - Customers: %d, Employees: %d, Currencies: %d, Transactions: %d", 
+        return String.format("Bank: %s - Customers: %d, Employees: %d, Currencies: %d, Transactions: %d",
                 name, customers.size(), employees.size(), currencies.size(), transactions.size());
     }
 }

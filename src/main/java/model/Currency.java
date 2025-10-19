@@ -1,6 +1,7 @@
 package model;
 
 import enums.CurrencyType;
+
 import java.math.BigDecimal;
 
 public final class Currency {

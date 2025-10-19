@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Loan implements ITransferMoney {
 
     private static final Logger logger = LogManager.getLogger(Loan.class);
-    
+
     private BigDecimal amount;
     private BigDecimal interestRate;
     private RiskLevel risk;
@@ -72,7 +72,7 @@ public class Loan implements ITransferMoney {
     }
 
     public String getLoanInfo() {
-        return String.format("Loan [%s] - Amount: %s, Risk: %s, Type: %s", 
+        return String.format("Loan [%s] - Amount: %s, Risk: %s, Type: %s",
                 type.name(), amount, risk.getDescription(), type.name());
     }
 

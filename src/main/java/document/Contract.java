@@ -9,7 +9,7 @@ import java.time.LocalTime;
 public class Contract extends Document {
 
     private static final Logger logger = LogManager.getLogger(Contract.class);
-    
+
     private String partyA;
     private String partyB;
     private LocalTime createdTime;

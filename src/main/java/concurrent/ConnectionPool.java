@@ -35,12 +35,12 @@ public class ConnectionPool {
 
     public AccountDb getConnection() throws InterruptedException {
         AccountDb connection = availableConnections.poll();
-        
+
         if (connection != null) {
             logger.info("Got existing connection {}", connection.getConnectionId());
             return connection;
         }
-        
+
         if (totalCreated.get() < maxConnections) {
             String connectionId = "CONN-" + connectionCounter.getAndIncrement();
             connection = new AccountDb(connectionId);
@@ -48,14 +48,14 @@ public class ConnectionPool {
             logger.info("Created new connection {}", connectionId);
             return connection;
         }
-        
+
         logger.info("Pool full, waiting for connection");
         return availableConnections.take();
     }
 
     public boolean releaseConnection(AccountDb connection) {
         if (connection == null) return false;
-        
+
         boolean released = availableConnections.offer(connection);
         if (released) {
             logger.info("Released connection {}", connection.getConnectionId());

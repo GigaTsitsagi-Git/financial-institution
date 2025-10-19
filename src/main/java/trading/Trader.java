@@ -10,7 +10,7 @@ import java.util.Set;
 public class Trader {
 
     private static final Logger logger = LogManager.getLogger(Trader.class);
-    
+
     private String traderId;
     private Customer customer;
 
