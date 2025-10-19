@@ -11,7 +11,7 @@ public class ConnectionPool {
 
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static volatile ConnectionPool instance;
-    private final BlockingQueue<AccountDao> availableConnections;
+    private final BlockingQueue<AccountDb> availableConnections;
     private final int maxConnections;
     private final AtomicInteger connectionCounter = new AtomicInteger(1);
     private final AtomicInteger totalCreated = new AtomicInteger(0);
@@ -33,8 +33,8 @@ public class ConnectionPool {
         return instance;
     }
 
-    public AccountDao getConnection() throws InterruptedException {
-        AccountDao connection = availableConnections.poll();
+    public AccountDb getConnection() throws InterruptedException {
+        AccountDb connection = availableConnections.poll();
         
         if (connection != null) {
             logger.info("Got existing connection {}", connection.getConnectionId());
@@ -43,7 +43,7 @@ public class ConnectionPool {
         
         if (totalCreated.get() < maxConnections) {
             String connectionId = "CONN-" + connectionCounter.getAndIncrement();
-            connection = new AccountDao(connectionId);
+            connection = new AccountDb(connectionId);
             totalCreated.incrementAndGet();
             logger.info("Created new connection {}", connectionId);
             return connection;
@@ -53,7 +53,7 @@ public class ConnectionPool {
         return availableConnections.take();
     }
 
-    public boolean releaseConnection(AccountDao connection) {
+    public boolean releaseConnection(AccountDb connection) {
         if (connection == null) return false;
         
         boolean released = availableConnections.offer(connection);

@@ -7,13 +7,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountDao {
+public class AccountDb {
 
-    private static final Logger logger = LogManager.getLogger(AccountDao.class);
+    private static final Logger logger = LogManager.getLogger(AccountDb.class);
     private final Map<String, Account> accounts = new HashMap<>();
     private final String connectionId;
 
-    public AccountDao(String connectionId) {
+    public AccountDb(String connectionId) {
         this.connectionId = connectionId;
         logger.info("Connection created: {}", connectionId);
     }

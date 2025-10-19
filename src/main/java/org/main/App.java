@@ -25,7 +25,7 @@ import transaction.Loan;
 import transaction.Transaction;
 import enums.*;
 import concurrent.ConnectionPool;
-import concurrent.AccountDao;
+import concurrent.AccountDb;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -394,7 +394,7 @@ public class App {
             final int id = i + 1;
             threads[i] = new Thread(() -> {
                 try {
-                    AccountDao conn = pool.getConnection();
+                        AccountDb conn = pool.getConnection();
                     logger.info("Thread {} got connection {}", id, conn.getConnectionId());
                     Thread.sleep(1000);
                     pool.releaseConnection(conn);
@@ -420,7 +420,7 @@ public class App {
             final int id = i + 1;
             threadPool.submit(() -> {
                 try {
-                    AccountDao conn = pool.getConnection();
+                        AccountDb conn = pool.getConnection();
                     logger.info("Pool task {} got connection {}", id, conn.getConnectionId());
                     Thread.sleep(1000);
                     pool.releaseConnection(conn);
@@ -443,7 +443,7 @@ public class App {
             final int id = i + 1;
             executor.submit(() -> {
                 try {
-                    AccountDao conn = pool.getConnection();
+                        AccountDb conn = pool.getConnection();
                     logger.info("Executor task {} got connection {}", id, conn.getConnectionId());
                     Thread.sleep(1000);
                     pool.releaseConnection(conn);
