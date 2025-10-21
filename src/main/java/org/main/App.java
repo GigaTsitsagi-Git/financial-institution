@@ -483,7 +483,7 @@ public class App {
                     logger.info("CompletableFuture running async task");
                     return "CF-OK";
                 })
-                .thenAccept(result -> logger.info("CompletableFuture result: {}", result));
+                .thenAccept(result1 -> logger.info("CompletableFuture result: {}", result1));
         completableFuture.join();
 
         // Maven Package Structure
