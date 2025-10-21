@@ -26,6 +26,9 @@ import transaction.Transaction;
 import enums.*;
 import concurrent.ConnectionPool;
 import concurrent.AccountDb;
+import com.solvd.financial_instituion.banking.BankService;
+import com.solvd.financial_instituion.trading.TradingService;
+import com.solvd.financial_instituion.utilities.ValidationUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,13 +46,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
+import java.lang.reflect.*;
+import annotations.Audit;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@Audit(value = "MainApp", priority = 2)
 public class App {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+
+    @Audit(value = "LoanEvaluation", priority = 1)
+    private static boolean evaluateLoan(Customer customer, BigDecimal amount, ILoanEvaluator evaluator) {
+        return evaluator.approve(customer, amount);
+    }
 
     public static void main(String[] args) throws Exception {
 
@@ -294,6 +306,13 @@ public class App {
         logger.info("Alice loan approved? {}", simpleEvaluator.approve(c1, new BigDecimal("3000")));
         logger.info("Bob loan approved? {}", simpleEvaluator.approve(c2, new BigDecimal("3000")));
 
+        boolean approvedViaParam = evaluateLoan(
+                c1,
+                new BigDecimal("3000"),
+                (customer, amount) -> customer.getAge() >= 18 && amount.compareTo(new BigDecimal("5000")) <= 0
+        );
+        logger.info("Loan approved via method parameter? {}", approvedViaParam);
+
         logger.info("");
 
 
@@ -457,6 +476,74 @@ public class App {
             executor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.error("Executor shutdown interrupted");
+        }
+
+        CompletableFuture<Void> completableFuture = CompletableFuture
+                .supplyAsync(() -> {
+                    logger.info("CompletableFuture running async task");
+                    return "CF-OK";
+                })
+                .thenAccept(result -> logger.info("CompletableFuture result: {}", result));
+        completableFuture.join();
+
+        // Maven Package Structure
+        logger.info("=== Maven Package Structure Demo ===");
+        
+        BankService bankService = new BankService();
+        bankService.processLoan("C001", new BigDecimal("5000"));
+        bankService.openAccount("C001", "SAVINGS");
+        
+        TradingService tradingService = new TradingService();
+        tradingService.buyStock("AAPL", 100, new BigDecimal("150.00"));
+        BigDecimal price = tradingService.getCurrentPrice("GOOGL");
+        logger.info("Current GOOGL price: {}", price);
+        
+        boolean validAmount = ValidationUtils.isValidAmount(new BigDecimal("1000"));
+        boolean validAccount = ValidationUtils.isValidAccountNumber("ACC123456");
+        ValidationUtils.logValidation("Amount", validAmount);
+        ValidationUtils.logValidation("Account", validAccount);
+
+        logger.info("Reflection starting");
+
+        Class<?> clazz = Account.class;
+        logger.info("Class: {} | Modifiers: {}", clazz.getName(), Modifier.toString(clazz.getModifiers()));
+
+        for (Field f : clazz.getDeclaredFields()) {
+            logger.info("Field -> name: {}, type: {}, modifiers: {}",
+                    f.getName(), f.getType().getSimpleName(), Modifier.toString(f.getModifiers()));
+        }
+
+        for (Constructor<?> cons : clazz.getDeclaredConstructors()) {
+            String paramsStr = Arrays.stream(cons.getParameterTypes())
+                    .map(Class::getSimpleName)
+                    .collect(Collectors.joining(", "));
+            logger.info("Constructor -> modifiers: {} | params: ({})",
+                    Modifier.toString(cons.getModifiers()), paramsStr);
+        }
+
+        for (Method m : clazz.getDeclaredMethods()) {
+            String paramsStr = Arrays.stream(m.getParameterTypes())
+                    .map(Class::getSimpleName)
+                    .collect(Collectors.joining(", "));
+            logger.info("Method -> name: {}, return: {}, modifiers: {}, params: ({})",
+                    m.getName(), m.getReturnType().getSimpleName(), Modifier.toString(m.getModifiers()), paramsStr);
+        }
+
+        Constructor<?> ctor = clazz.getConstructor(String.class, AccountType.class, CurrencyType.class, BigDecimal.class);
+        Object accRef = ctor.newInstance("REF-ACC", AccountType.SAVINGS, CurrencyType.USD, new BigDecimal("1234.56"));
+        Method toStringRef = clazz.getMethod("toString");
+        logger.info("Reflection toString(): {}", toStringRef.invoke(accRef));
+
+        Class<?> appClazz = App.class;
+        if (appClazz.isAnnotationPresent(Audit.class)) {
+            Audit a = appClazz.getAnnotation(Audit.class);
+            logger.info("@Audit on App -> value: {}, priority: {}", a.value(), a.priority());
+        }
+
+        Method evalMethod = appClazz.getDeclaredMethod("evaluateLoan", Customer.class, BigDecimal.class, ILoanEvaluator.class);
+        if (evalMethod.isAnnotationPresent(Audit.class)) {
+            Audit a2 = evalMethod.getAnnotation(Audit.class);
+            logger.info("@Audit on evaluateLoan -> value: {}, priority: {}", a2.value(), a2.priority());
         }
     }
 }
